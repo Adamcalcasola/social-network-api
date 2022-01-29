@@ -34,6 +34,10 @@ const ReactionSchema = new Schema(
 );
 
 const ThoughtSchema = new Schema({
+    username: {
+        type: String,
+        required: true
+    },
     thoughtText: {
         type: String,
         required: true,
@@ -43,14 +47,9 @@ const ThoughtSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        get: createdAtVal => dateFormat(createdAt)
+        get: createdAtVal => dateFormat(createdAtVal)
     },
-    username: {
-        type: String,
-        required: true
-    },
-    reactions: [reactionSchema]
-
+    reactions: [ReactionSchema]
 },
     {
         toJSON: {
