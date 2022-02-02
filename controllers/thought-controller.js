@@ -16,7 +16,7 @@ const thoughtController = {
             });
     },
     getThoughtById({ params }, res) {
-        Thought.findOne({ _id: params.id })
+        Thought.findOne({ _id: params.thoughtId })
             .populate({
                 path: 'reactions',
                 select: '-__v'
@@ -36,10 +36,9 @@ const thoughtController = {
     addThought({ params, body }, res) {
         Thought.create(body)
             .then(({ _id }) => {
-                // console.log(body.username);
                 return User.findOneAndUpdate(
                     { _id: params.userId },
-                    { $push: { reactions: _id } },
+                    { $push: { thoughts: _id } },
                     { new: true }
                 )
             })
@@ -52,7 +51,7 @@ const thoughtController = {
             .catch(err => res.json(err));
     },
     updateThought({ params, body }, res) {
-        Thought.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+        Thought.findOneAndUpdate({ _id: params.thoughtId }, body, { new: true, runValidators: true })
             .then(dbThoughtData => {
                 if (!dbThoughtData) {
                     return res.status(404).json({ message: 'No thought found with this id!' });
@@ -65,7 +64,7 @@ const thoughtController = {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
             { $push: { reactions: body } },
-            { new: true, runValidatores: true }
+            { new: true, runValidators: true }
         )
             .then(dbReactionData => {
                 if (!dbReactionData) {

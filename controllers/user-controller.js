@@ -7,6 +7,10 @@ const userController = {
                 path: 'thoughts',
                 select: '-__v'
             })
+            .populate({
+                path: 'friends',
+                select: '-__v'
+            })
             .select('-__v')
             .sort({ _id: -1 })
             .then(dbUserData => res.json(dbUserData))
@@ -16,10 +20,13 @@ const userController = {
             });
     },
     getUserById({ params }, res) {
-        console.log(params);
         User.findOne({ _id: params.userId })
             .populate({
                 path: 'thoughts',
+                select: '-__v'
+            })
+            .populate({
+                path: 'friends',
                 select: '-__v'
             })
             .select('-__v')
@@ -59,8 +66,34 @@ const userController = {
             })
             .catch(err => res.status(400).json(err));
     },
-    addFriend(req, res) {},
-    removeFriend(req, res) {},
+    addFriend({ params, body }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $push: { friends: body } },
+            { new: true }
+        )
+        .then(dbUserData => {
+            if (!dbUserData) {
+                return res.status(404).json({ message: 'No user found with this id!' });
+            }
+            res.json(dbUserData);
+        })
+        .catch(err => res.json(err));
+    },
+    removeFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $pull: { friends: { friendId: params.friendId } } },
+            { new: true }
+        )
+        .then(dbUserData => {
+            if (!dbUserData) {
+                return res.status(404).json({ message: 'No user found with this id!'});
+            }
+            res.json(dbUserData);
+        })
+        .catch(err => res.json(err));
+    },
 };
 
 module.exports = userController;

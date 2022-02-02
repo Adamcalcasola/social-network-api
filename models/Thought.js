@@ -34,10 +34,6 @@ const ReactionSchema = new Schema(
 );
 
 const ThoughtSchema = new Schema({
-    username: {
-        type: String,
-        required: true
-    },
     thoughtText: {
         type: String,
         required: true,
@@ -48,6 +44,10 @@ const ThoughtSchema = new Schema({
         type: Date,
         default: Date.now,
         get: createdAtVal => dateFormat(createdAtVal)
+    },
+    username: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     reactions: [ReactionSchema]
 },
