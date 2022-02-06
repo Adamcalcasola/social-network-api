@@ -20,7 +20,7 @@ Navigate to the root directory in the project folder and type npm start to start
 link for tutorial that demonstrates how to use the application:
 https://watch.screencastify.com/v/vxm8CpqbEKbwTpSExsi2
 
-![social-network-api-screenshot](/social-network-api-screenshot.png?raw=true "screenshot")
+![social-network-api-screenshot](social-network-api-screenshot.png?raw=true "screenshot")
 
 ## Contributing:
 Please go to the Github repository provided to contribute to this project.
