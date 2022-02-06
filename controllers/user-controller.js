@@ -1,6 +1,8 @@
 const { User } = require('../models');
 
+// Controller function for User model
 const userController = {
+    // Returns all the saved users created
     getAllUsers(req, res) {
         User.find({})
             .populate({
@@ -19,6 +21,7 @@ const userController = {
                 res.status(400).json(err);
             });
     },
+    // Returns a user by the user's id
     getUserById({ params }, res) {
         User.findOne({ _id: params.userId })
             .populate({
@@ -41,11 +44,13 @@ const userController = {
                 res.status(400).json(err);
             })
     },
+    // Creates a new user
     createUser({ body }, res) {
         User.create(body)
             .then(dbUserData => res.json(dbUserData))
             .catch(err => res.status(400).json(err))
     },
+    // Updates a saved user's data
     updateUser({ params, body }, res) {
         User.findOneAndUpdate({ _id: params.userId }, body, { new: true, runValidators: true })
             .then(dbUserData => {
@@ -56,6 +61,7 @@ const userController = {
             })
             .catch(err => res.status(400).json(err));
     },
+    // Deletes a saved user from the database
     removeUser({ params }, res) {
         User.findOneAndDelete({ _id: params.userId })
             .then(dbUserData => {
@@ -66,6 +72,7 @@ const userController = {
             })
             .catch(err => res.status(400).json(err));
     },
+    // Adds a user to a user's friends list
     addFriend({ params, body }, res) {
         User.findOneAndUpdate(
             { _id: params.userId },
@@ -80,6 +87,7 @@ const userController = {
         })
         .catch(err => res.json(err));
     },
+    // Removes a user from a user's friend list
     removeFriend({ params }, res) {
         User.findOneAndUpdate(
             { _id: params.userId },
